@@ -3,6 +3,7 @@
 GGK_WORKDIR="/root/gpg-gen-key"
 GGK_OUTPUT_GPGDIR="$GGK_WORKDIR/output-gnupg"
 GGK_OUTPUT_STDOUT="$GGK_WORKDIR/output-stdout/$(hostname)"
+GGK_GEN_KEY_SCRIPT="$GGK_WORKDIR/gen-key-script"
 GGK_GPGDIR="/root/.gnupg"
 
 touch $GGK_OUTPUT_STDOUT
@@ -22,7 +23,7 @@ do
     gpg --list-key > /dev/null 2>&1
 
     # Key creation
-    GPG_REVOKE_LOCATE="$(gpg --batch --gen-key gen-key-script 2>&1)"
+    GPG_REVOKE_LOCATE="$(gpg --batch --gen-key $GGK_GEN_KEY_SCRIPT 2>&1)"
 
     # Cut GPG keyID from the key creation output (revoke location msg)
     GPG_KEYID="$(echo "$GPG_REVOKE_LOCATE" | sed -z 's/\n//g' | cut -d '/' -f 8 | cut -d '.' -f 1)"
